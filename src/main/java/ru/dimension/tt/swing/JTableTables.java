@@ -6,6 +6,7 @@ import ru.dimension.tt.api.TTRegistry;
 import ru.dimension.tt.model.TTTableModel;
 import ru.dimension.tt.schema.TTColumnBinding;
 import ru.dimension.tt.schema.TTSchema;
+import ru.dimension.tt.swing.event.RowEventSupport;
 import ru.dimension.tt.swing.icon.RowIconSupport;
 
 public final class JTableTables {
@@ -29,8 +30,16 @@ public final class JTableTables {
 
     TTTable<T, JTable> tt = new TTTable<>(table, model, sp);
 
-    if (ui != null && ui.rowIconProvider() != null && ui.rowIconPlacement() != null) {
-      RowIconSupport.install(table, model, ui.rowIconPlacement(), ui.rowIconProvider());
+    if (ui != null) {
+      // Row icons
+      if (ui.rowIconProvider() != null && ui.rowIconPlacement() != null) {
+        RowIconSupport.install(table, model, ui.rowIconPlacement(), ui.rowIconProvider());
+      }
+
+      // Row events
+      if (ui.rowActions() != null) {
+        RowEventSupport.install(table, model, ui.rowActions());
+      }
     }
 
     return tt;

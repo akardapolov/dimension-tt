@@ -21,6 +21,54 @@ Java Typed Table for JTable and JXTable.
 
 ## Why Dimension-TT?
 
+```mermaid
+%%{init: {'theme': 'base', 'themeVariables': { 'primaryColor': '#E8F4FD', 'primaryTextColor': '#2C3E50', 'primaryBorderColor': '#85C1E9', 'lineColor': '#5DADE2', 'fontFamily': 'arial'}}}%%
+
+flowchart TD
+    subgraph DEFINE["📝 Definition"]
+        A["Java Class + @TTColumn<br/><i>id, name, order, kind...</i>"]
+    end
+
+    subgraph BUILD["🔧 Build-time"]
+        B["Package Scanning"]
+        C["JDK Class-File API"]
+        D["TTScanIndex"]
+        B --> C --> D
+    end
+
+    subgraph RUNTIME["⚡ Runtime"]
+        E["TTRegistry"]
+        F["MethodHandles<br/><i>fast accessors</i>"]
+        G["TTTableModel&lt;T&gt;"]
+        E --> F --> G
+    end
+
+    subgraph RESULT["🖥️ Typed Table"]
+        H["TTTable&lt;T&gt;"]
+        I["setItems(List&lt;T&gt;)"]
+        J["addItem(T)"]
+        K["selectedItem() → T"]
+        H --- I
+        H --- J
+        H --- K
+    end
+
+    subgraph UI["🎨 UI"]
+        L["JTable / JXTable"]
+    end
+
+    DEFINE ==> BUILD
+    BUILD ==> RUNTIME
+    RUNTIME ==> RESULT
+    RESULT ==> UI
+
+    style DEFINE fill:#E8F8F5,stroke:#1ABC9C,stroke-width:2px
+    style BUILD fill:#FEF9E7,stroke:#F4D03F,stroke-width:2px
+    style RUNTIME fill:#EBF5FB,stroke:#5DADE2,stroke-width:2px
+    style RESULT fill:#F5EEF8,stroke:#AF7AC5,stroke-width:2px
+    style UI fill:#FADBD8,stroke:#E6B0AA,stroke-width:2px
+```
+
 Swing tables are powerful, but the default workflow is usually untyped:
 
 - you manually define columns and their classes;

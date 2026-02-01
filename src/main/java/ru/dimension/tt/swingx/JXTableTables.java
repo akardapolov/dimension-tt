@@ -9,6 +9,7 @@ import ru.dimension.tt.schema.TTColumnBinding;
 import ru.dimension.tt.schema.TTSchema;
 import ru.dimension.tt.swing.TTTable;
 import ru.dimension.tt.swing.TableUi;
+import ru.dimension.tt.swing.event.RowEventSupport;
 import ru.dimension.tt.swing.icon.RowIconSupport;
 
 public final class JXTableTables {
@@ -34,8 +35,14 @@ public final class JXTableTables {
 
     TTTable<T, JXTable> tt = new TTTable<>(table, model, sp);
 
-    if (ui != null && ui.rowIconProvider() != null && ui.rowIconPlacement() != null) {
-      RowIconSupport.install(table, model, ui.rowIconPlacement(), ui.rowIconProvider());
+    if (ui != null) {
+      if (ui.rowIconProvider() != null && ui.rowIconPlacement() != null) {
+        RowIconSupport.install(table, model, ui.rowIconPlacement(), ui.rowIconProvider());
+      }
+
+      if (ui.rowActions() != null) {
+        RowEventSupport.install(table, model, ui.rowActions());
+      }
     }
 
     return tt;
