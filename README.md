@@ -17,6 +17,7 @@ Java Typed Table for JTable and JXTable.
   - [6. Selection](#6-selection)
 - [Documentation](#documentation)
 - [Notice](#notice)
+- [Build and Release](#build-and-release)
 - [Contact](#contact)
 
 ## Why Dimension-TT?
@@ -267,6 +268,61 @@ public handle() {
 
 - Build-time scan indexes methods currently by **name** (getter-style methods are expected). If you need overload-safe matching, extend the index to store method descriptors.
 - If a class is not present in the scan index, Dimension-TT can fall back to a reflection-based schema loader (configurable).
+
+## Build and Release
+
+**Requirements:** Java 25 (JDK Class-File API) and Maven 3.9+.
+
+### Local build and install
+
+**Option 1 — without specifying a version**
+
+If you run without `-Drevision`, the default value from `pom.xml` will be used (`${revision}` → `26.2.1-SNAPSHOT`):
+
+```bash
+mvn clean install
+```
+
+**Option 2 — with an explicit version**
+
+To build the project with a specific version, override `${revision}` at build time:
+
+```bash
+mvn clean install -Drevision=26.2.3
+```
+
+### Release via Git tag
+
+Use this workflow if publishing/deployment is handled by a CI pipeline on tag push.
+
+**Linux / macOS (Bash)**
+```bash
+export RELEASE_VERSION=26.2.3
+git tag -a v"$RELEASE_VERSION" -m "Release $RELEASE_VERSION"
+git push origin v"$RELEASE_VERSION"
+```
+
+**Windows (PowerShell)**
+```powershell
+$env:RELEASE_VERSION="26.2.3"
+git tag -a v"$env:RELEASE_VERSION" -m "Release $env:RELEASE_VERSION"
+git push origin v"$env:RELEASE_VERSION"
+```
+
+**Windows (CMD)**
+```cmd
+set RELEASE_VERSION=26.2.3
+git tag -a v%RELEASE_VERSION% -m "Release %RELEASE_VERSION%"
+git push origin v%RELEASE_VERSION%
+```
+
+### Manual publish (Maven Central)
+
+If you need to publish manually from your machine (requires configured `settings.xml` credentials and GPG signing):
+
+```bash
+mvn deploy -Pcentral -DperformRelease=true -Drevision=26.2.3
+```
 
 ## Contact
 

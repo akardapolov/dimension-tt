@@ -17,6 +17,7 @@
     - [6. Выбор (Selection)](#6-выбор-selection)
 - [Документация](#документация)
 - [Примечание](#примечание)
+- [Сборка и релиз](#сборка-и-релиз)
 - [Контакты](#контакты)
 
 ## Почему Dimension-TT?
@@ -267,6 +268,61 @@ public handle() {
 
 - Сканирование на этапе сборки сейчас индексирует методы по **имени** (ожидаются методы в стиле геттеров). Если нужна безопасная для перегрузок привязка, расширьте индекс так, чтобы он хранил дескрипторы методов.
 - Если класса нет в индексе сканирования, Dimension-TT может откатиться к reflection-основанному загрузчику схем (настраивается).
+
+## Сборка и релиз
+
+**Требования:** Java 25 (JDK Class-File API) и Maven 3.9+.
+
+### Локальная сборка и установка в локальный репозиторий
+
+**Вариант 1 — без указания версии**
+
+Если запустить без `-Drevision`, будет использовано значение по умолчанию из `pom.xml` (сейчас это `${revision}` → `26.2.1-SNAPSHOT`):
+
+```bash
+mvn clean install
+```
+
+**Вариант 2 — с явным указанием версии**
+
+Чтобы собрать проект с конкретной версией, нужно переопределить `${revision}` на время сборки:
+
+```bash
+mvn clean install -Drevision=26.2.3
+```
+
+### Релиз через Git tag
+
+Используйте этот способ, если публикация/деплой выполняется CI-пайплайном при пуше тега.
+
+**Linux / macOS (Bash)**
+```bash
+export RELEASE_VERSION=26.2.3
+git tag -a v"$RELEASE_VERSION" -m "Релиз версии $RELEASE_VERSION"
+git push origin v"$RELEASE_VERSION"
+```
+
+**Windows (PowerShell)**
+```powershell
+$env:RELEASE_VERSION="26.2.3"
+git tag -a v"$env:RELEASE_VERSION" -m "Релиз версии $env:RELEASE_VERSION"
+git push origin v"$env:RELEASE_VERSION"
+```
+
+**Windows (CMD)**
+```cmd
+set RELEASE_VERSION=26.2.3
+git tag -a v%RELEASE_VERSION% -m "Релиз версии %RELEASE_VERSION%"
+git push origin v%RELEASE_VERSION%
+```
+
+### Ручная публикация (Maven Central)
+
+Если нужно публиковать вручную с локальной машины (требуется настроенный `settings.xml` и GPG-подпись):
+
+```bash
+mvn deploy -Pcentral -DperformRelease=true -Drevision=26.2.3
+```
 
 ## Контакты
 
